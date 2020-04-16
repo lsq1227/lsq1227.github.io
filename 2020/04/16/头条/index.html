@@ -13,7 +13,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>
-    python小功能的整合 |  wishing
+    某日头条参数加密逆向 |  wishing
   </title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   
@@ -40,7 +40,7 @@
   <div id="app">
     <main class="content on">
       <section class="outer">
-  <article id="post-python小技巧" class="article article-type-post" itemscope
+  <article id="post-头条" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
   <div class="article-inner">
@@ -48,7 +48,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  python小功能的整合
+  某日头条参数加密逆向
 </h1>
  
 
@@ -57,8 +57,8 @@
 
     
     <div class="article-meta">
-      <a href="/2020/04/14/python%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-date">
-  <time datetime="2020-04-14T05:08:17.000Z" itemprop="datePublished">2020-04-14</time>
+      <a href="/2020/04/16/%E5%A4%B4%E6%9D%A1/" class="article-date">
+  <time datetime="2020-04-16T08:05:01.000Z" itemprop="datePublished">2020-04-16</time>
 </a>
       
       
@@ -81,32 +81,21 @@
       
 
       
-      <h1 id="python的几个小技巧整合"><a href="#python的几个小技巧整合" class="headerlink" title="python的几个小技巧整合"></a>python的几个小技巧整合</h1><h3 id="元素重复判断"><a href="#元素重复判断" class="headerlink" title="元素重复判断"></a>元素重复判断</h3><p>以下方法可以检查给定列表是不是存在重复元素，它会使用 set() 函数来移除所有重复元素。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">def judge(lst):</span><br><span class="line">    return len(lst) &#x3D;&#x3D; len(set(lst))</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">a &#x3D; [1,2,3,4,5,6,7]</span><br><span class="line">b &#x3D; [1,1,2,3,2,4,5,6,7]</span><br><span class="line"></span><br><span class="line">judge(a) #false</span><br><span class="line">judge(b) #true</span><br></pre></td></tr></table></figure>
+      <h1 id="某日头条js加密逆向"><a href="#某日头条js加密逆向" class="headerlink" title="某日头条js加密逆向"></a>某日头条js加密逆向</h1><p>贴链接<a href="https://www.toutiao.com/c/user/article/?page_type=1&user_id=102107972930&max_behot_time=0&count=20&as=A185BED8CA9A847&cp=5E8ABA080457EE1&_signature=WVIiDgAgEBDJraClGUiBAFlTYxAAAfZvsjcdJBrm3BQ5Lcwwi8.485qNftHd93ZpKQiE-zfWyXzY-3k1VxciWZv2slFIaf19YHOr6jP2GTAoBlcbAo.-dAZze4KrO3ZIvGI" target="_blank" rel="noopener">接口</a></p>
+<p>头条的加密和淘宝的对比：</p>
+<p>首先是看请求参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. page_type: 1</span><br><span class="line">2. user_id: 102107972930</span><br><span class="line">3. max_behot_time: 0</span><br><span class="line">4. count: 20</span><br><span class="line">5. as: A185BED8CA9A847</span><br><span class="line">6. cp: 5E8ABA080457EE1</span><br><span class="line">7. _signature: WVIiDgAgEBDJraClGUiBAFlTYxAAAfZvsjcdJBrm3BQ5Lcwwi8.485qNftHd93ZpKQiE-zfWyXzY-3k1VxciWZv2slFIaf19YHOr6jP2GTAoBlcbAo.-dAZze4KrO3ZIvGI</span><br></pre></td></tr></table></figure>
 
-<h3 id="字符元素组成判定"><a href="#字符元素组成判定" class="headerlink" title="字符元素组成判定"></a>字符元素组成判定</h3><p>检查两个字符串的组成元素是不是一样的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from collections import Counter</span><br><span class="line"></span><br><span class="line">def judge(first, second):</span><br><span class="line">    return Counter(first) &#x3D;&#x3D; Counter(second)</span><br><span class="line"></span><br><span class="line">judge(&quot;abcd3&quot;, &quot;3acdb&quot;) # True</span><br></pre></td></tr></table></figure>
+<p>三个加密参数，可以确定了。</p>
+<h3 id="as-cp参数生成方式"><a href="#as-cp参数生成方式" class="headerlink" title="as-cp参数生成方式"></a>as-cp参数生成方式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">def toHex(num):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    :type num: int</span><br><span class="line">    :rtype: str</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    chaDic &#x3D; &#123;10: &#39;a&#39;, 11: &#39;b&#39;, 12: &#39;c&#39;, 13: &#39;d&#39;, 14: &#39;e&#39;, 15: &#39;f&#39;&#125;</span><br><span class="line">    hexStr &#x3D; &quot;&quot;</span><br><span class="line">    if num &lt; 0:</span><br><span class="line">        num &#x3D; num + 2 ** 32</span><br><span class="line">    while num &gt;&#x3D; 16:</span><br><span class="line">        digit &#x3D; num % 16</span><br><span class="line">        hexStr &#x3D; chaDic.get(digit, str(digit)) + hexStr</span><br><span class="line">        num &#x2F;&#x2F;&#x3D; 16</span><br><span class="line">    hexStr &#x3D; chaDic.get(num, str(num)) + hexStr</span><br><span class="line">    return hexStr</span><br><span class="line">    </span><br><span class="line">def get_sc_cp():</span><br><span class="line">    import time</span><br><span class="line">    import hashlib</span><br><span class="line">    e &#x3D; int(int(time.time())*1000 &#x2F; 1e3)</span><br><span class="line">    i &#x3D; toHex(e).upper()</span><br><span class="line">    hash &#x3D; hashlib.md5()</span><br><span class="line">    t1 &#x3D; hash.update(bytes(i,encoding&#x3D;&#39;utf-8&#39;))</span><br><span class="line">    t &#x3D; str(hash.hexdigest()).upper()</span><br><span class="line">    if len(i) !&#x3D; 8:</span><br><span class="line">        return &#123;&#39;as&#39;: &quot;479BB4B7254C150&quot;,&#39;cp&#39;: &quot;7E0AC8874BB0985&quot;&#125;</span><br><span class="line">    o &#x3D; t[0:5]</span><br><span class="line">    n &#x3D; t[-5:]</span><br><span class="line">    a &#x3D; &#39;&#39;</span><br><span class="line">    r &#x3D; &#39;&#39;</span><br><span class="line">    for s in range(5):</span><br><span class="line">        a &#x3D; a + o[s] + i[s]</span><br><span class="line">        r &#x3D; r + i[s+3] + n[s]</span><br><span class="line">    return &#123;&#39;as&#39;: &quot;A1&quot; + a + i[-3:],&#39;cp&#39;: i[0:3] + r + &quot;E1&quot;&#125;</span><br><span class="line">print(get_sc_cp())</span><br></pre></td></tr></table></figure>
 
-<h3 id="内存占用"><a href="#内存占用" class="headerlink" title="内存占用"></a>内存占用</h3><p>下面的代码块可以检查变量 test所占用的内存。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">test &#x3D; &#39;hello word&#39;</span><br><span class="line">print(sys.getsizeof(test)) #59</span><br></pre></td></tr></table></figure>
+<p>对他前端的代码进行python版本的翻译，直接调用get_sc_cp()方法就可以得到这两个参数。</p>
+<p>接下来就是对sign令牌的参数破解。</p>
+<h3 id="sign"><a href="#sign" class="headerlink" title="sign"></a>sign</h3><p>这边头条前端使用的加密方式依然是获取参数，然后修改window对象的原生链，重写md5方法，并且在特定情况下调用不同的对象进行加密。因为他这边使用到了window对象，nodejs环境中并不带有这个对象，接下来就是使用Firefox的无头浏览器进行js注入拿参数。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class selenium_nign():</span><br><span class="line">    def __init__(self,url):</span><br><span class="line">        self.url &#x3D; url</span><br><span class="line">        driver &#x3D; webdriver.FirefoxOptions()</span><br><span class="line">        # driver.add_argument(&#39;-headless&#39;)</span><br><span class="line">        self.driver &#x3D; webdriver.Firefox(firefox_options&#x3D;driver)</span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line">    def nign(self,time&#x3D;0):</span><br><span class="line">        nign &#x3D; self.driver.execute_script(&#39;&#39;&#39;return utils.tacSign(&quot;&#x2F;c&#x2F;user&#x2F;article&#x2F;&quot;);&#39;&#39;&#39;)</span><br><span class="line">         #通过这里来获取，第一个参数为作者id，第二个参数就是前面讲的max_behot_time参数</span><br><span class="line">        return nign</span><br><span class="line">    def cookie(self,blok&#x3D;0):</span><br><span class="line">        if blok:</span><br><span class="line">            self.driver.get(self.url)</span><br><span class="line">        cookies &#x3D; self.driver.get_cookies()</span><br><span class="line">        cookie &#x3D; [item[&#39;name&#39;] + &quot;&#x3D;&quot; + item[&#39;value&#39;] for item in cookies]</span><br><span class="line">        cookiestr &#x3D; &#39;; &#39;.join(item for item in cookie)</span><br><span class="line">        return cookiestr</span><br><span class="line">    def sclock(self):</span><br><span class="line">        self.driver.close()</span><br><span class="line">se &#x3D; selenium_nign(url&#x3D;&#39;https:&#x2F;&#x2F;www.toutiao.com&#x2F;c&#x2F;user&#x2F;102107972930&#x2F;#mid&#x3D;1607559076471816&#39;)</span><br></pre></td></tr></table></figure>
 
-<h3 id="字节占用"><a href="#字节占用" class="headerlink" title="字节占用"></a>字节占用</h3><p>下面的代码块可以检查字符串占用的字节数。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def byte_size(string):</span><br><span class="line">    return(len(string.encode(&#39;utf-8&#39;)))</span><br><span class="line">print(byte_size(&#39;你好啊&#39;)) #9</span><br></pre></td></tr></table></figure>
-
-<h3 id="列表分块"><a href="#列表分块" class="headerlink" title="列表分块"></a>列表分块</h3><p>将列表分割成不同size的列表集合</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from math import ceil</span><br><span class="line">def chunk(li, size):</span><br><span class="line">    return list(</span><br><span class="line">        map(lambda x: li[x * size:x * size + size],</span><br><span class="line">            list(range(0, ceil(len(li) &#x2F; size)))))</span><br><span class="line">print(chunk([1,1,2,2,3,3,4,4,5,5],3))  #[[1, 1, 2], [2, 3, 3], [4, 4, 5], [5]]</span><br><span class="line">print(chunk([1,1,2,2,3,3,4,4,5,5],2))  #[[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]</span><br></pre></td></tr></table></figure>
-
-<h3 id="链式对比"><a href="#链式对比" class="headerlink" title="链式对比"></a>链式对比</h3><p>我们可以在一行代码中使用不同的运算符对比多个不同的元素。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; 3</span><br><span class="line">print( 2 &lt; a &lt; 8) # True</span><br><span class="line">print(1 &#x3D;&#x3D; a &lt; 2) # False</span><br></pre></td></tr></table></figure>
-
-<h3 id="列表差值"><a href="#列表差值" class="headerlink" title="列表差值"></a>列表差值</h3><p>该方法将返回第一个列表的元素，其不在第二个列表内。如果同时要反馈第二个列表独有的元素，还需要加一句 set_b.difference(set_a)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">def difference(a, b):</span><br><span class="line">    set_a &#x3D; set(a)</span><br><span class="line">    set_b &#x3D; set(b)</span><br><span class="line">    comparison &#x3D; set_a.difference(set_b)</span><br><span class="line">    return list(comparison)</span><br><span class="line"></span><br><span class="line">difference([1,2,3], [1,2,4]) # [3]</span><br></pre></td></tr></table></figure>
-
-<h3 id="三元表达式"><a href="#三元表达式" class="headerlink" title="三元表达式"></a>三元表达式</h3><p>python中带有许多三元表达式，他的作用是简化代码，也有语法糖的别称。下面给大家举例几个常用语法糖.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; &#39;aa&#39;</span><br><span class="line">if a &#x3D;&#x3D; &#39;aa&#39;:</span><br><span class="line">    print(&#39;true&#39;)</span><br><span class="line">else:</span><br><span class="line">    print(&#39;false&#39;)</span><br><span class="line">    </span><br><span class="line">-----这是if-else的简化写法----</span><br><span class="line"></span><br><span class="line">a &#x3D; &#39;aa&#39;</span><br><span class="line">print(&#39;true&#39; if a &#x3D;&#x3D; &#39;aa&#39; else &#39;false&#39;)</span><br><span class="line"></span><br><span class="line">------------------------------我是分割线-------------------------------------</span><br><span class="line"></span><br><span class="line">b &#x3D; [1,2,3,4,5,6,7,8,9]</span><br><span class="line">c &#x3D; []</span><br><span class="line">for i in b:</span><br><span class="line">	if i &lt; 5:</span><br><span class="line">    	c.append(i+3)</span><br><span class="line">	else:</span><br><span class="line">		c.append(i)</span><br><span class="line">-----这是for+if-else的简化写法----</span><br><span class="line"></span><br><span class="line">c1 &#x3D; [i+3 if i &lt; 5 else i for i in b]</span><br><span class="line"></span><br><span class="line">------------------------------我是分割线-------------------------------------</span><br><span class="line">#除了这些表达式外，还有一些三元表达式在我们的python中已经融入到了日常的使用中</span><br><span class="line">#接下来为大家举例几个</span><br><span class="line">1.  </span><br><span class="line">	#可以不用去管关闭的时候的close，将读写对象改一个好写的名词</span><br><span class="line">	with open(&#39;test.txt&#39;,&#39;rw&#39;,encoding&#x3D;&#39;utf-8&#39;) as f:</span><br><span class="line">	</span><br><span class="line">2.</span><br><span class="line">	#这个是try+else的一个语法糖，else是必定被执行的</span><br><span class="line">	try:</span><br><span class="line">    	a &#x3D; 3</span><br><span class="line">    	print(a &gt; 5)</span><br><span class="line">	except:</span><br><span class="line">    	print(&#39;楼上说的不对&#39;)</span><br><span class="line">	else:</span><br><span class="line">    	print(&#39;在坐的各位都是弟弟，我必定被运行&#39;)</span><br></pre></td></tr></table></figure>
-
-<h3 id="random常用命令"><a href="#random常用命令" class="headerlink" title="random常用命令"></a>random常用命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import random</span><br><span class="line"></span><br><span class="line">b &#x3D; [1,2,3,4,5,6,7,8,9]</span><br><span class="line"></span><br><span class="line">temp &#x3D; random.choice(b) #3</span><br><span class="line">temp1 &#x3D; random.randint(1,50) #37</span><br><span class="line">temp2 &#x3D; random.random() #0.21647397633164955</span><br><span class="line">#choice 在列表中随机一个元素，比较常用的一个方法。</span><br><span class="line">#randint 在一个int类型范围中随机选取一个元素</span><br><span class="line">#random  随机一个0-1之间的小数</span><br></pre></td></tr></table></figure>
-
+<p>在调用它的方法时候，记得添加一个前端的对象值，这个值就是请求cookie，每个请求的cookie都有些许的不同，调用sign方法可以获取到当前页面的sign参数值，一定要配合自己的url，hash加密是一点都不能错的，我这里的url是个人列表页的链接，如果要获取其他页面，可以换一个url就可以获取到sign的值，还有就是对于前两个参数as-cp获取完了之后，要用js注入到指定的对象中。</p>
+<p>另外说一下Firefox的配置，推荐使用50版本，后面的版本会被检测，一定要保证window.navigator.webdriver的结果为undefined，不然还是会被检测。</p>
 
       
       <!-- reward -->
@@ -171,14 +160,14 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/04/14/python%E5%B0%8F%E6%8A%80%E5%B7%A7/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/04/16/%E5%A4%B4%E6%9D%A1/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
 
 
     </footer>
@@ -189,19 +178,10 @@
   
   <nav class="article-nav">
     
-      <a href="/2020/04/16/%E5%A4%B4%E6%9D%A1/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            某日头条参数加密逆向
-          
-        </div>
-      </a>
     
-    
-      <a href="/2020/04/14/hexo%E5%86%99%E5%8D%9A%E5%AE%A2/" class="article-nav-link">
+      <a href="/2020/04/14/python%E5%B0%8F%E6%8A%80%E5%B7%A7/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">hexo发布自己的博客</div>
+        <div class="article-nav-title">python小功能的整合</div>
       </a>
     
   </nav>
