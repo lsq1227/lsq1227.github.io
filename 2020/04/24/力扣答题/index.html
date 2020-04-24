@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" >
+
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="python,request,scrapy" />
+   
+  <meta name="description" content="小破站" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    力扣答题 |  wishing
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-力扣答题" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  力扣答题
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/24/%E5%8A%9B%E6%89%A3%E7%AD%94%E9%A2%98/" class="article-date">
+  <time datetime="2020-04-24T05:42:23.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+      
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h3 id="记录一下力扣答题的经验"><a href="#记录一下力扣答题的经验" class="headerlink" title="记录一下力扣答题的经验"></a>记录一下力扣答题的经验</h3><h4 id="在字符串-s-中找出第一个只出现一次的字符。如果没有，返回一个单空格。"><a href="#在字符串-s-中找出第一个只出现一次的字符。如果没有，返回一个单空格。" class="headerlink" title="在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。"></a>在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。</h4><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s &#x3D; &quot;abaccdeff&quot;</span><br><span class="line">返回 &quot;b&quot;</span><br><span class="line"></span><br><span class="line">s &#x3D; &quot;&quot; </span><br><span class="line">返回 &quot; &quot;</span><br></pre></td></tr></table></figure>
+
+<p>答题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Solution:</span><br><span class="line">    def firstUniqChar(self, s: str) -&gt; str:</span><br><span class="line">        if s &#x3D;&#x3D; &#39;&#39;:</span><br><span class="line">            return &#39; &#39;</span><br><span class="line">        li &#x3D; &#123;&#125;</span><br><span class="line">        for i in range(len(s)):</span><br><span class="line">            if s[i] in li.keys():</span><br><span class="line">                li[s[i]] &#x3D; li[s[i]] + 1</span><br><span class="line">            else:</span><br><span class="line">                li[s[i]] &#x3D; 1</span><br><span class="line">        for k,v in li.items():</span><br><span class="line">            if v &#x3D;&#x3D; 1:</span><br><span class="line">                return k</span><br><span class="line">        return &#39; &#39;</span><br></pre></td></tr></table></figure>
+
+<p>解法：如果在字符串中出现了一次的字符，就记录他一下。如果没有就返回空。第一步先想到，这道题肯定需要计数统计，使用dict类型来实现统计，出现一次加一。而后遍历字典，判断是否有出现一次的，如果有出现一次的，就返回该字符，如果没有就返回空。</p>
+<h4 id="我们把只包含因子-2、3-和-5-的数称作丑数（Ugly-Number）。求按从小到大的顺序的第-n-个丑数。"><a href="#我们把只包含因子-2、3-和-5-的数称作丑数（Ugly-Number）。求按从小到大的顺序的第-n-个丑数。" class="headerlink" title="我们把只包含因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。"></a>我们把只包含因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。</h4><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: n &#x3D; 10</span><br><span class="line">输出: 12</span><br><span class="line">解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. 1 是丑数。</span><br><span class="line">2. n 不超过1690。</span><br></pre></td></tr></table></figure>
+
+<p>答题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def nthUglyNumber(n):</span><br><span class="line">    if n &#x3D;&#x3D; 0:</span><br><span class="line">        return 0</span><br><span class="line">        # 1作为特殊数直接保存</span><br><span class="line">    baselist &#x3D; [1]</span><br><span class="line">    min2 &#x3D; min3 &#x3D; min5 &#x3D; 0</span><br><span class="line">    curnum &#x3D; 1</span><br><span class="line">    while curnum &lt; n:</span><br><span class="line">        minnum &#x3D; min(baselist[min2] * 2, baselist[min3] * 3, baselist[min5] * 5)</span><br><span class="line">        print(minnum)</span><br><span class="line">        baselist.append(minnum)</span><br><span class="line">        # 找到第一个乘以2的结果大于当前最大丑数M的数字，也就是T2</span><br><span class="line">        while baselist[min2] * 2 &lt;&#x3D; minnum:</span><br><span class="line">            min2 +&#x3D; 1</span><br><span class="line">        # 找到第一个乘以3的结果大于当前最大丑数M的数字，也就是T3</span><br><span class="line">        while baselist[min3] * 3 &lt;&#x3D; minnum:</span><br><span class="line">            min3 +&#x3D; 1</span><br><span class="line">        # 找到第一个乘以5的结果大于当前最大丑数M的数字，也就是T5</span><br><span class="line">        while baselist[min5] * 5 &lt;&#x3D; minnum:</span><br><span class="line">            min5 +&#x3D; 1</span><br><span class="line">        curnum +&#x3D; 1</span><br><span class="line">    return baselist[-1]</span><br></pre></td></tr></table></figure>
+
+<p>解法：最直接的暴力解法是从1开始依次判断数字是否为丑数，直到达到要求的丑数个数。当然这种方法肯定是会TLE的，所以我们分析一下丑数的生成特点(这里把1排除)：因为丑数只包含质因子2，3，5，假设我们已经有n-1个丑数，按照顺序排列，且第n-1的丑数为M。那么第n个丑数一定是由这n-1个丑数分别乘以2，3，5，得到的所有大于M的结果中，最小的那个数。事实上我们不需要每次都计算前面所有丑数乘以2，3，5的结果，然后再比较大小。因为在已存在的丑数中，一定存在某个数T2T2，在它之前的所有数乘以2都小于已有丑数，而T2×2T2×2的结果一定大于M，同理，也存在这样的数T3，T5T3，T5，我们只需要标记这三个数即可。</p>
+<h3 id="在一个-m-n-的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于-0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？"><a href="#在一个-m-n-的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于-0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？" class="headerlink" title="在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？"></a>在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？</h3><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">[</span><br><span class="line">  [1,3,1],</span><br><span class="line">  [1,5,1],</span><br><span class="line">  [4,2,1]</span><br><span class="line">]</span><br><span class="line">输出: 12</span><br><span class="line">解释: 路径 1→3→5→2→1 可以拿到最多价值的礼物</span><br></pre></td></tr></table></figure>
+
+<p>解答：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">li &#x3D; [[1,2,5],</span><br><span class="line">      [3,2,1],</span><br><span class="line">      [3,2,1]]</span><br><span class="line">def lu():</span><br><span class="line">    start &#x3D; [0,0]</span><br><span class="line">    li2 &#x3D; [li[start[0]][start[1]]]</span><br><span class="line">    while True:</span><br><span class="line">        right &#x3D; [start[0] + 1,start[1]]  #右边</span><br><span class="line">        down &#x3D; [start[0],start[1] + 1] #下</span><br><span class="line">        print(start)</span><br><span class="line">        try:</span><br><span class="line">            temp1 &#x3D; li[right[0]][right[1]] #右边不能走了</span><br><span class="line">        except:</span><br><span class="line">            if start[0] &#x3D;&#x3D; len(li[-1])-1 or start[1] &#x3D;&#x3D; len(li)-1:</span><br><span class="line">                break</span><br><span class="line">            start &#x3D; [start[0], start[1] + 1]</span><br><span class="line">            print(start)</span><br><span class="line">            li2.append(li[start[0]][start[1]])</span><br><span class="line">            continue</span><br><span class="line">        try:</span><br><span class="line">            temp1 &#x3D; li[down[0]][down[1]]  # 下边不能走了</span><br><span class="line">        except:</span><br><span class="line">            if start[0] &#x3D;&#x3D; len(li[-1])-1 or start[1] &#x3D;&#x3D; len(li)-1:</span><br><span class="line">                break</span><br><span class="line">            start &#x3D; [start[0] + 1, start[1]]</span><br><span class="line">            li2.append(li[start[0]][start[1]])</span><br><span class="line">            continue</span><br><span class="line">        if li[right[0]][right[1]] &gt; li[down[0]][down[1]]:</span><br><span class="line">            start &#x3D; [start[0] + 1,start[1]]</span><br><span class="line">            li2.append(li[start[0]][start[1]])</span><br><span class="line">        else:</span><br><span class="line">            start &#x3D; [start[0],start[1] + 1]</span><br><span class="line">            li2.append(li[start[0]][start[1]])</span><br><span class="line">        if start[0] &#x3D;&#x3D; len(li[-1]) or start[1] &#x3D;&#x3D; len(li):</span><br><span class="line">            break</span><br><span class="line">    li2.append(li[-1][-1])</span><br><span class="line">    num &#x3D; 0</span><br><span class="line">    for i in li2:</span><br><span class="line">        num +&#x3D; i</span><br><span class="line">    return num</span><br></pre></td></tr></table></figure>
+
+<p>解法：start记录当前位置，right是下一个左边的位置，down是下一个下边的位置，对比两个位置，那个数值大就移动到哪一格，最后累加一下，返回结果。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/04/24/%E5%8A%9B%E6%89%A3%E7%AD%94%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/21/%E5%AD%97%E4%BD%93%E5%8A%A0%E5%AF%86/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">字体加密</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        爬虫小菜鸡
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="wishing"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="https://github.com/lsq1227" target="_blank" rel="noopener">git主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['浅望幸福，不写忧伤，红尘三千，不道惆怅，不问花开几许，只问浅笑安然', '“如约而至”是个多么美好的词，等的辛苦，却从不辜负', '总在不经意的年生，回首彼岸，纵然发现光景绵长'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: false
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+  
+<script src="/js/clickLove.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
