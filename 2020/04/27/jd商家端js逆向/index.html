@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" >
+
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="python,request,scrapy" />
+   
+  <meta name="description" content="小破站" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    jd商家端js逆向 |  wishing
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-jd商家端js逆向" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  jd商家端js逆向
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/27/jd%E5%95%86%E5%AE%B6%E7%AB%AFjs%E9%80%86%E5%90%91/" class="article-date">
+  <time datetime="2020-04-27T08:04:19.000Z" itemprop="datePublished">2020-04-27</time>
+</a>
+      
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <h3 id="代码目的"><a href="#代码目的" class="headerlink" title="代码目的"></a>代码目的</h3><p>获取到jd商家端（jd商智）的数据，主要拿的是大盘数据，客户分析，成交转换，店铺搜索等商家数据。本次展示的是jd商智的js逆向逻辑，主要用于学习，非商用！！！</p>
+<p>首先找到他的接口信息，找到他的js入口。找到入口之后看到如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$(document).ajaxSend(function(e, t, a) &#123;</span><br><span class="line">    var n &#x3D; a.url.split(&quot;.ajax&quot;);</span><br><span class="line">    if (n &amp;&amp; n.length &gt; 0) &#123;</span><br><span class="line">        var r &#x3D; n[0];</span><br><span class="line">        r +&#x3D; &quot;.ajax&quot;;</span><br><span class="line">        var s &#x3D; window.$frontend_monitor &amp;&amp; window.$frontend_monitor.getUUID &amp;&amp; window.$frontend_monitor.getUUID(r);</span><br><span class="line">        if (s) &#123;</span><br><span class="line">            r &#x3D; r.replace(&#x2F;^http(s)?:\&#x2F;\&#x2F;(.*?)\&#x2F;&#x2F;, &quot;&quot;).replace(&#x2F;\s+&#x2F;g, &quot;&quot;);</span><br><span class="line">            var i &#x3D; (new Date).getTime();</span><br><span class="line">            t.setRequestHeader(&quot;uuid&quot;, s),</span><br><span class="line">            t.setRequestHeader(&quot;User-mup&quot;, i),</span><br><span class="line">            t.setRequestHeader(&quot;User-mnp&quot;, md5createFun.createHash(r + s + i + &quot;372ad2c2b6&quot;)),</span><br><span class="line">            t.setRequestHeader(&quot;p-pin&quot;, errGetCookie(&quot;pin&quot;))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>他的加密参数是设置在request-header里面，我们要获取的就是uuid和User-mnp这两个参数。将他的代码分析一下，得出结论</p>
+<p>md5createFun.createHash        加密方法</p>
+<p>其中参数为</p>
+<p>r       url部分截取</p>
+<p>s       uuid</p>
+<p>i        时间戳</p>
+<p>“372ad2c2b6”    固定值</p>
+<p>将这些参数挨个找到，这里需要注意的是 uuid这参数，这边jd进行修改原生链的操作。原生的window对象中并没有这个uuid这个方法，这个方法是在后面添加进去的，只是通过window这个对象来进行调用。可以直接在python中使用uuid5的方法来调用，他传进了一个参数，也是url的部分截取，使用pythono的方法来复现一遍js代码即可。</p>
+<p>生成完毕后，直接将这些参数添加进请求头。注意的是所有参数必须一致，即加密时候的时间戳以及uuid必须和请求头中的一致。因为后台校验的方式是取到你请求头的参数进行加密然后进行对比。加密必须做到分毫不差，不然加密的结果就会大不一样。打个比方</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">638eada490b030d53893ca3721e22e9e   #第一次的 参数为123</span><br><span class="line">13162d48a641250a4a46776cc2ebecdb   #第二次的 参数为1234</span><br><span class="line">#hash加密参数差一点结果就会差很多。</span><br></pre></td></tr></table></figure>
+
+<p>将以上的步骤理解并编写代码后，就可以轻松过jd的后端验证。</p>
+<p>这里就是他的加密参数，可以直接使用execjs这个库来进行调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line">function createHash(e) &#123;</span><br><span class="line">        if (null &#x3D;&#x3D;&#x3D; e)</span><br><span class="line">            return null;</span><br><span class="line">        var t, n, i, r, a, o, s, l, c, u, d &#x3D; function(e, t) &#123;</span><br><span class="line">            return e &lt;&lt; t | e &gt;&gt;&gt; 32 - t</span><br><span class="line">        &#125;, p &#x3D; function(e, t) &#123;</span><br><span class="line">            var n, i, r, a, o;</span><br><span class="line">            return r &#x3D; 2147483648 &amp; e,</span><br><span class="line">            a &#x3D; 2147483648 &amp; t,</span><br><span class="line">            n &#x3D; 1073741824 &amp; e,</span><br><span class="line">            i &#x3D; 1073741824 &amp; t,</span><br><span class="line">            o &#x3D; (1073741823 &amp; e) + (1073741823 &amp; t),</span><br><span class="line">            n &amp; i ? 2147483648 ^ o ^ r ^ a : n | i ? 1073741824 &amp; o ? 3221225472 ^ o ^ r ^ a : 1073741824 ^ o ^ r ^ a : o ^ r ^ a</span><br><span class="line">        &#125;, h &#x3D; function(e, t, n) &#123;</span><br><span class="line">            return e &amp; t | ~e &amp; n</span><br><span class="line">        &#125;, f &#x3D; function(e, t, n) &#123;</span><br><span class="line">            return e &amp; n | t &amp; ~n</span><br><span class="line">        &#125;, g &#x3D; function(e, t, n) &#123;</span><br><span class="line">            return e ^ t ^ n</span><br><span class="line">        &#125;, m &#x3D; function(e, t, n) &#123;</span><br><span class="line">            return t ^ (e | ~n)</span><br><span class="line">        &#125;, v &#x3D; function(e, t, n, i, r, a, o) &#123;</span><br><span class="line">            return e &#x3D; p(e, p(p(h(t, n, i), r), o)),</span><br><span class="line">            p(d(e, a), t)</span><br><span class="line">        &#125;, y &#x3D; function(e, t, n, i, r, a, o) &#123;</span><br><span class="line">            return e &#x3D; p(e, p(p(f(t, n, i), r), o)),</span><br><span class="line">            p(d(e, a), t)</span><br><span class="line">        &#125;, b &#x3D; function(e, t, n, i, r, a, o) &#123;</span><br><span class="line">            return e &#x3D; p(e, p(p(g(t, n, i), r), o)),</span><br><span class="line">            p(d(e, a), t)</span><br><span class="line">        &#125;, w &#x3D; function(e, t, n, i, r, a, o) &#123;</span><br><span class="line">            return e &#x3D; p(e, p(p(m(t, n, i), r), o)),</span><br><span class="line">            p(d(e, a), t)</span><br><span class="line">        &#125;, x &#x3D; function(e) &#123;</span><br><span class="line">            for (var t, n &#x3D; e.length, i &#x3D; n + 8, r &#x3D; (i - i % 64) &#x2F; 64, a &#x3D; 16 * (r + 1), o &#x3D; new Array(a - 1), s &#x3D; 0, l &#x3D; 0; l &lt; n; )</span><br><span class="line">                t &#x3D; (l - l % 4) &#x2F; 4,</span><br><span class="line">                s &#x3D; l % 4 * 8,</span><br><span class="line">                o[t] &#x3D; o[t] | e.charCodeAt(l) &lt;&lt; s,</span><br><span class="line">                l++;</span><br><span class="line">            return t &#x3D; (l - l % 4) &#x2F; 4,</span><br><span class="line">            s &#x3D; l % 4 * 8,</span><br><span class="line">            o[t] &#x3D; o[t] | 128 &lt;&lt; s,</span><br><span class="line">            o[a - 2] &#x3D; n &lt;&lt; 3,</span><br><span class="line">            o[a - 1] &#x3D; n &gt;&gt;&gt; 29,</span><br><span class="line">            o</span><br><span class="line">        &#125;, $ &#x3D; function(e) &#123;</span><br><span class="line">            var t, n, i &#x3D; &quot;&quot;, r &#x3D; &quot;&quot;;</span><br><span class="line">            for (n &#x3D; 0; n &lt;&#x3D; 3; n++)</span><br><span class="line">                t &#x3D; e &gt;&gt;&gt; 8 * n &amp; 255,</span><br><span class="line">                r &#x3D; &quot;0&quot; + t.toString(16),</span><br><span class="line">                i +&#x3D; r.substr(r.length - 2, 2);</span><br><span class="line">            return i</span><br><span class="line">        &#125;, k &#x3D; [], D &#x3D; 7, C &#x3D; 12, S &#x3D; 17, T &#x3D; 22, M &#x3D; 5, I &#x3D; 9, A &#x3D; 14, O &#x3D; 20, E &#x3D; 4, P &#x3D; 11, R &#x3D; 16, N &#x3D; 23, L &#x3D; 6, F &#x3D; 10, V &#x3D; 15, B &#x3D; 21;</span><br><span class="line">        for (k &#x3D; x(e),</span><br><span class="line">        s &#x3D; 1732584193,</span><br><span class="line">        l &#x3D; 4023233417,</span><br><span class="line">        c &#x3D; 2562383102,</span><br><span class="line">        u &#x3D; 271733878,</span><br><span class="line">        t &#x3D; k.length,</span><br><span class="line">        n &#x3D; 0; n &lt; t; n +&#x3D; 16)</span><br><span class="line">            i &#x3D; s,</span><br><span class="line">            r &#x3D; l,</span><br><span class="line">            a &#x3D; c,</span><br><span class="line">            o &#x3D; u,</span><br><span class="line">            s &#x3D; v(s, l, c, u, k[n + 0], D, 3614090360),</span><br><span class="line">            u &#x3D; v(u, s, l, c, k[n + 1], C, 3905402710),</span><br><span class="line">            c &#x3D; v(c, u, s, l, k[n + 2], S, 606105819),</span><br><span class="line">            l &#x3D; v(l, c, u, s, k[n + 3], T, 3250441966),</span><br><span class="line">            s &#x3D; v(s, l, c, u, k[n + 4], D, 4118548399),</span><br><span class="line">            u &#x3D; v(u, s, l, c, k[n + 5], C, 1200080426),</span><br><span class="line">            c &#x3D; v(c, u, s, l, k[n + 6], S, 2821735955),</span><br><span class="line">            l &#x3D; v(l, c, u, s, k[n + 7], T, 4249261313),</span><br><span class="line">            s &#x3D; v(s, l, c, u, k[n + 8], D, 1770035416),</span><br><span class="line">            u &#x3D; v(u, s, l, c, k[n + 9], C, 2336552879),</span><br><span class="line">            c &#x3D; v(c, u, s, l, k[n + 10], S, 4294925233),</span><br><span class="line">            l &#x3D; v(l, c, u, s, k[n + 11], T, 2304563134),</span><br><span class="line">            s &#x3D; v(s, l, c, u, k[n + 12], D, 1804603682),</span><br><span class="line">            u &#x3D; v(u, s, l, c, k[n + 13], C, 4254626195),</span><br><span class="line">            c &#x3D; v(c, u, s, l, k[n + 14], S, 2792965006),</span><br><span class="line">            l &#x3D; v(l, c, u, s, k[n + 15], T, 1236535329),</span><br><span class="line">            s &#x3D; y(s, l, c, u, k[n + 1], M, 4129170786),</span><br><span class="line">            u &#x3D; y(u, s, l, c, k[n + 6], I, 3225465664),</span><br><span class="line">            c &#x3D; y(c, u, s, l, k[n + 11], A, 643717713),</span><br><span class="line">            l &#x3D; y(l, c, u, s, k[n + 0], O, 3921069994),</span><br><span class="line">            s &#x3D; y(s, l, c, u, k[n + 5], M, 3593408605),</span><br><span class="line">            u &#x3D; y(u, s, l, c, k[n + 10], I, 38016083),</span><br><span class="line">            c &#x3D; y(c, u, s, l, k[n + 15], A, 3634488961),</span><br><span class="line">            l &#x3D; y(l, c, u, s, k[n + 4], O, 3889429448),</span><br><span class="line">            s &#x3D; y(s, l, c, u, k[n + 9], M, 568446438),</span><br><span class="line">            u &#x3D; y(u, s, l, c, k[n + 14], I, 3275163606),</span><br><span class="line">            c &#x3D; y(c, u, s, l, k[n + 3], A, 4107603335),</span><br><span class="line">            l &#x3D; y(l, c, u, s, k[n + 8], O, 1163531501),</span><br><span class="line">            s &#x3D; y(s, l, c, u, k[n + 13], M, 2850285829),</span><br><span class="line">            u &#x3D; y(u, s, l, c, k[n + 2], I, 4243563512),</span><br><span class="line">            c &#x3D; y(c, u, s, l, k[n + 7], A, 1735328473),</span><br><span class="line">            l &#x3D; y(l, c, u, s, k[n + 12], O, 2368359562),</span><br><span class="line">            s &#x3D; b(s, l, c, u, k[n + 5], E, 4294588738),</span><br><span class="line">            u &#x3D; b(u, s, l, c, k[n + 8], P, 2272392833),</span><br><span class="line">            c &#x3D; b(c, u, s, l, k[n + 11], R, 1839030562),</span><br><span class="line">            l &#x3D; b(l, c, u, s, k[n + 14], N, 4259657740),</span><br><span class="line">            s &#x3D; b(s, l, c, u, k[n + 1], E, 2763975236),</span><br><span class="line">            u &#x3D; b(u, s, l, c, k[n + 4], P, 1272893353),</span><br><span class="line">            c &#x3D; b(c, u, s, l, k[n + 7], R, 4139469664),</span><br><span class="line">            l &#x3D; b(l, c, u, s, k[n + 10], N, 3200236656),</span><br><span class="line">            s &#x3D; b(s, l, c, u, k[n + 13], E, 681279174),</span><br><span class="line">            u &#x3D; b(u, s, l, c, k[n + 0], P, 3936430074),</span><br><span class="line">            c &#x3D; b(c, u, s, l, k[n + 3], R, 3572445317),</span><br><span class="line">            l &#x3D; b(l, c, u, s, k[n + 6], N, 76029189),</span><br><span class="line">            s &#x3D; b(s, l, c, u, k[n + 9], E, 3654602809),</span><br><span class="line">            u &#x3D; b(u, s, l, c, k[n + 12], P, 3873151461),</span><br><span class="line">            c &#x3D; b(c, u, s, l, k[n + 15], R, 530742520),</span><br><span class="line">            l &#x3D; b(l, c, u, s, k[n + 2], N, 3299628645),</span><br><span class="line">            s &#x3D; w(s, l, c, u, k[n + 0], L, 4096336452),</span><br><span class="line">            u &#x3D; w(u, s, l, c, k[n + 7], F, 1126891415),</span><br><span class="line">            c &#x3D; w(c, u, s, l, k[n + 14], V, 2878612391),</span><br><span class="line">            l &#x3D; w(l, c, u, s, k[n + 5], B, 4237533241),</span><br><span class="line">            s &#x3D; w(s, l, c, u, k[n + 12], L, 1700485571),</span><br><span class="line">            u &#x3D; w(u, s, l, c, k[n + 3], F, 2399980690),</span><br><span class="line">            c &#x3D; w(c, u, s, l, k[n + 10], V, 4293915773),</span><br><span class="line">            l &#x3D; w(l, c, u, s, k[n + 1], B, 2240044497),</span><br><span class="line">            s &#x3D; w(s, l, c, u, k[n + 8], L, 1873313359),</span><br><span class="line">            u &#x3D; w(u, s, l, c, k[n + 15], F, 4264355552),</span><br><span class="line">            c &#x3D; w(c, u, s, l, k[n + 6], V, 2734768916),</span><br><span class="line">            l &#x3D; w(l, c, u, s, k[n + 13], B, 1309151649),</span><br><span class="line">            s &#x3D; w(s, l, c, u, k[n + 4], L, 4149444226),</span><br><span class="line">            u &#x3D; w(u, s, l, c, k[n + 11], F, 3174756917),</span><br><span class="line">            c &#x3D; w(c, u, s, l, k[n + 2], V, 718787259),</span><br><span class="line">            l &#x3D; w(l, c, u, s, k[n + 9], B, 3951481745),</span><br><span class="line">            s &#x3D; p(s, i),</span><br><span class="line">            l &#x3D; p(l, r),</span><br><span class="line">            c &#x3D; p(c, a),</span><br><span class="line">            u &#x3D; p(u, o);</span><br><span class="line">        var H &#x3D; $(s) + $(l) + $(c) + $(u);</span><br><span class="line">        return H.toLowerCase()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/04/27/jd%E5%95%86%E5%AE%B6%E7%AB%AFjs%E9%80%86%E5%90%91/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/24/%E5%8A%9B%E6%89%A3%E7%AD%94%E9%A2%98/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">力扣答题</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        爬虫小菜鸡
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="wishing"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="https://github.com/lsq1227" target="_blank" rel="noopener">git主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['浅望幸福，不写忧伤，红尘三千，不道惆怅，不问花开几许，只问浅笑安然', '“如约而至”是个多么美好的词，等的辛苦，却从不辜负', '总在不经意的年生，回首彼岸，纵然发现光景绵长'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: false
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+  
+<script src="/js/clickLove.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
