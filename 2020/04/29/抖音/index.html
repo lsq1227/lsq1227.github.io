@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" >
+
+
+<head>
+  <meta charset="utf-8" />
+   
+  <meta name="keywords" content="python,request,scrapy" />
+   
+  <meta name="description" content="小破站" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    抖音 |  wishing
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/dist/main.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  
+  
+
+  
+
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content on">
+      <section class="outer">
+  <article id="post-抖音" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  抖音
+</h1>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/29/%E6%8A%96%E9%9F%B3/" class="article-date">
+  <time datetime="2020-04-29T05:51:11.000Z" itemprop="datePublished">2020-04-29</time>
+</a>
+      
+      
+    </div>
+    
+
+    
+    
+
+
+
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>给大家分享一波抖音的爬虫代码。</p>
+<p>signtrue 接口为外接接口，没有进行本地破解。这里不展示接口逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: UTF-8 –*-</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">抖音爬虫，现可以进行个人信息的爬取以及某人下的视频</span><br><span class="line">作者：wishing</span><br><span class="line">时间：2020&#x2F;3&#x2F;2</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">from urllib.parse import quote</span><br><span class="line">from pyquery import PyQuery as pq</span><br><span class="line">from docx.shared import Inches</span><br><span class="line">from docx import Document</span><br><span class="line">import requests</span><br><span class="line">import time</span><br><span class="line">import json</span><br><span class="line">import re</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class DouYinCrawl:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.__transDict &#x3D; &#123;&#39;xe602&#39;: &#39;1&#39;, &#39;xe603&#39;: &#39;0&#39;, &#39;xe604&#39;: &#39;3&#39;, &#39;xe605&#39;: &#39;2&#39;, &#39;xe606&#39;: &#39;4&#39;, &#39;xe607&#39;: &#39;5&#39;,</span><br><span class="line">                            &#39;xe608&#39;: &#39;6&#39;,</span><br><span class="line">                            &#39;xe609&#39;: &#39;9&#39;, &#39;xe60a&#39;: &#39;7&#39;, &#39;xe60b&#39;: &#39;8&#39;, &#39;xe60c&#39;: &#39;4&#39;, &#39;xe60d&#39;: &#39;0&#39;, &#39;xe60e&#39;: &#39;1&#39;,</span><br><span class="line">                            &#39;xe60f&#39;: &#39;5&#39;,</span><br><span class="line">                            &#39;xe610&#39;: &#39;2&#39;, &#39;xe611&#39;: &#39;3&#39;, &#39;xe612&#39;: &#39;6&#39;, &#39;xe613&#39;: &#39;7&#39;, &#39;xe614&#39;: &#39;8&#39;, &#39;xe615&#39;: &#39;9&#39;,</span><br><span class="line">                            &#39;xe616&#39;: &#39;0&#39;,</span><br><span class="line">                            &#39;xe617&#39;: &#39;2&#39;, &#39;xe618&#39;: &#39;1&#39;, &#39;xe619&#39;: &#39;4&#39;, &#39;xe61a&#39;: &#39;3&#39;, &#39;xe61b&#39;: &#39;5&#39;, &#39;xe61c&#39;: &#39;7&#39;,</span><br><span class="line">                            &#39;xe61d&#39;: &#39;8&#39;,</span><br><span class="line">                            &#39;xe61e&#39;: &#39;9&#39;, &#39;xe61f&#39;: &#39;6&#39;&#125;</span><br><span class="line">        self.__headers &#x3D; &#123;</span><br><span class="line">            &#39;upgrade-insecure-requests&#39;: &#39;1&#39;,</span><br><span class="line">            &#39;user-agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.122 Safari&#x2F;537.36&#39;,</span><br><span class="line">            &#39;sec-fetch-dest&#39;: &#39;document&#39;,</span><br><span class="line">            &#39;accept&#39;: &#39;text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.9&#39;,</span><br><span class="line">            &#39;sec-fetch-site&#39;: &#39;none&#39;,</span><br><span class="line">            &#39;sec-fetch-mode&#39;: &#39;navigate&#39;,</span><br><span class="line">            &#39;sec-fetch-user&#39;: &#39;?1&#39;,</span><br><span class="line">            &#39;accept-language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;,</span><br><span class="line">            &#39;cookie&#39;: &#39;_ga&#x3D;GA1.2.913540324.1582983429; _gid&#x3D;GA1.2.1576801560.1582983429;&#39;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    def __safe_get(self, key, itemDict):</span><br><span class="line">        try:</span><br><span class="line">            return itemDict[key]</span><br><span class="line">        except:</span><br><span class="line">            return &#39;&#39;</span><br><span class="line"></span><br><span class="line">    def __create_path(self, *path):</span><br><span class="line">        finPath &#x3D; &#39;&#39;</span><br><span class="line">        for i in range(len(path)):</span><br><span class="line">            finPath +&#x3D; path[i]</span><br><span class="line">            if not os.path.exists(finPath):</span><br><span class="line">                os.mkdir(finPath)</span><br><span class="line">            finPath +&#x3D; &#39;&#x2F;&#39;</span><br><span class="line"></span><br><span class="line">    def __trans(self, transStr):</span><br><span class="line">        finStr &#x3D; transStr</span><br><span class="line">        finStr &#x3D; finStr.replace(&#39;&amp;#&#39;, &#39;&#39;).replace(&#39;;&#39;, &#39;&#39;)</span><br><span class="line">        for key in self.__transDict:</span><br><span class="line">            finStr &#x3D; finStr.replace(key, self.__transDict[key])</span><br><span class="line">        return finStr</span><br><span class="line"></span><br><span class="line">    def __add_param(self, document, boldWord, num):</span><br><span class="line">        p &#x3D; document.add_paragraph()</span><br><span class="line">        p.add_run(boldWord).bold &#x3D; True</span><br><span class="line">        p.add_run(&#39;:&#39; + num)</span><br><span class="line"></span><br><span class="line">    # 获取某一个抖音号的信息</span><br><span class="line">    def get_info(self, id, path):</span><br><span class="line">        link &#x3D; &#39;https:&#x2F;&#x2F;www.iesdouyin.com&#x2F;share&#x2F;user&#x2F;&#39; + str(id)</span><br><span class="line">        response &#x3D; requests.get(link, headers&#x3D;self.__headers)</span><br><span class="line">        html &#x3D; pq(response.text)</span><br><span class="line">        imgUrl &#x3D; html(&#39;#pagelet-user-info &gt; div.personal-card &gt; div.info1 &gt; span.author &gt; img&#39;).attr(&#39;src&#39;)</span><br><span class="line">        headers &#x3D; &#123;</span><br><span class="line">            &#39;user-agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.122 Safari&#x2F;537.36&#39;&#125;</span><br><span class="line">        tempRsp &#x3D; requests.get(imgUrl, headers&#x3D;headers)</span><br><span class="line">        name &#x3D; html(&#39;#pagelet-user-info &gt; div.personal-card &gt; div.info1 &gt; p.nickname&#39;).text()</span><br><span class="line">        self.__create_path(path, name)</span><br><span class="line">        file &#x3D; open(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;temp.png&#39;, &#39;wb&#39;)</span><br><span class="line">        file.write(tempRsp.content)</span><br><span class="line">        file.close()</span><br><span class="line">        info &#x3D; html(&#39;#pagelet-user-info &gt; div.personal-card &gt; div.info2 &gt; div &gt; span&#39;).text()</span><br><span class="line">        signature &#x3D; html(&#39;#pagelet-user-info &gt; div.personal-card &gt; div.info2 &gt; p.signature&#39;).text()</span><br><span class="line">        id &#x3D; self.__trans(re.compile(&#39;&lt;p class&#x3D;&quot;shortid&quot;&gt;(.*?)&lt;&#x2F;p&gt;&#39;).findall(response.text)[0])</span><br><span class="line">        focus &#x3D; self.__trans(re.compile(&#39;&lt;span class&#x3D;&quot;num&quot;&gt;(.*?)&lt;&#x2F;span&gt;&#39;).findall(response.text)[0])</span><br><span class="line">        follow &#x3D; self.__trans(</span><br><span class="line">            re.compile(&#39;&lt;span class&#x3D;&quot;follower block&quot;&gt;&lt;span class&#x3D;&quot;num&quot;&gt;(.*?)&lt;&#x2F;span&gt; &lt;&#x2F;span&gt;&#39;).findall(response.text)[0])</span><br><span class="line">        liked &#x3D; self.__trans(</span><br><span class="line">            re.compile(&#39;&lt;span class&#x3D;&quot;liked-num block&quot;&gt;&lt;span class&#x3D;&quot;num&quot;&gt;(.*?)&lt;&#x2F;span&gt;&#39;).findall(response.text)[0])</span><br><span class="line">        production &#x3D; self.__trans(</span><br><span class="line">            re.compile(&#39;&lt;div class&#x3D;&quot;user-tab active tab get-list&quot; data-type&#x3D;&quot;post&quot;&gt;(.*?)&lt;&#x2F;div&gt;&#39;).findall(response.text)[</span><br><span class="line">                0])</span><br><span class="line">        like &#x3D; self.__trans(</span><br><span class="line">            re.compile(&#39;&lt;div class&#x3D;&quot;like-tab tab get-list&quot; data-type&#x3D;&quot;like&quot;&gt;(.*?)&lt;&#x2F;div&gt;&#39;).findall(response.text)[0])</span><br><span class="line">        id &#x3D; pq(id).text().replace(&#39; &#39;, &#39;&#39;).replace(&#39;抖音ID：&#39;, &#39;&#39;)</span><br><span class="line">        focus &#x3D; pq(focus).text().replace(&#39; &#39;, &#39;&#39;)</span><br><span class="line">        follow &#x3D; pq(follow).text().replace(&#39; &#39;, &#39;&#39;).replace(&#39;粉丝&#39;, &#39;&#39;)</span><br><span class="line">        liked &#x3D; pq(liked).text().replace(&#39; &#39;, &#39;&#39;)</span><br><span class="line">        production &#x3D; pq(production).text().replace(&#39; &#39;, &#39;&#39;).replace(&#39;作品&#39;, &#39;&#39;)</span><br><span class="line">        like &#x3D; pq(like).text().replace(&#39; &#39;, &#39;&#39;).replace(&#39;喜欢&#39;, &#39;&#39;)</span><br><span class="line">        document &#x3D; Document()</span><br><span class="line">        document.add_heading(name, 0)</span><br><span class="line">        document.add_picture(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;temp.png&#39;, width&#x3D;Inches(1.25))</span><br><span class="line">        self.__add_param(document, &#39;抖音ID&#39;, id)</span><br><span class="line">        document.add_paragraph(info)</span><br><span class="line">        document.add_paragraph(signature)</span><br><span class="line">        self.__add_param(document, &#39;关注&#39;, focus)</span><br><span class="line">        self.__add_param(document, &#39;粉丝&#39;, follow)</span><br><span class="line">        self.__add_param(document, &#39;赞&#39;, liked)</span><br><span class="line">        self.__add_param(document, &#39;作品&#39;, production)</span><br><span class="line">        self.__add_param(document, &#39;喜欢&#39;, like)</span><br><span class="line">        document.save(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;info.docx&#39;)</span><br><span class="line">        os.remove(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;temp.png&#39;)</span><br><span class="line"></span><br><span class="line">    # 获取某个抖音号下的所有视频,water_mark用于标记是否有水印</span><br><span class="line">    def get_videos(self, id, path, water_mark&#x3D;True):</span><br><span class="line">        response &#x3D; requests.get(&#39;https:&#x2F;&#x2F;www.iesdouyin.com&#x2F;share&#x2F;user&#x2F;&#39; + str(id), headers&#x3D;self.__headers)</span><br><span class="line">        html &#x3D; pq(response.text)</span><br><span class="line">        name &#x3D; html(&#39;#pagelet-user-info &gt; div.personal-card &gt; div.info1 &gt; p.nickname&#39;).text()</span><br><span class="line">        self.__create_path(path, name)</span><br><span class="line">        production &#x3D; self.__trans(</span><br><span class="line">            re.compile(&#39;&lt;div class&#x3D;&quot;user-tab active tab get-list&quot; data-type&#x3D;&quot;post&quot;&gt;(.*?)&lt;&#x2F;div&gt;&#39;).findall(response.text)[</span><br><span class="line">                0])</span><br><span class="line">        production &#x3D; pq(production).text().replace(&#39; &#39;, &#39;&#39;).replace(&#39;作品&#39;, &#39;&#39;)</span><br><span class="line">        cursor &#x3D; 0</span><br><span class="line">        print(&#39;共有&#39; + str(production) + &#39;个作品~~~&#39;)</span><br><span class="line">        session &#x3D; requests.Session()</span><br><span class="line">        url &#x3D; &quot;https:&#x2F;&#x2F;api.anoyi.com&#x2F;api&#x2F;signature&#x2F;ies&#x2F;&quot; + str(id)</span><br><span class="line">        headers &#x3D; &#123;</span><br><span class="line">            &#39;Connection&#39;: &#39;keep-alive&#39;,</span><br><span class="line">            &#39;Accept&#39;: &#39;*&#x2F;*&#39;,</span><br><span class="line">            &#39;Sec-Fetch-Dest&#39;: &#39;empty&#39;,</span><br><span class="line">            &#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.122 Safari&#x2F;537.36&#39;,</span><br><span class="line">            &#39;Origin&#39;: &#39;https:&#x2F;&#x2F;anoyi.com&#39;,</span><br><span class="line">            &#39;Host&#39;: &#39;api.anoyi.com&#39;,</span><br><span class="line">            &#39;Sec-Fetch-Site&#39;: &#39;same-site&#39;,</span><br><span class="line">            &#39;Sec-Fetch-Mode&#39;: &#39;cors&#39;,</span><br><span class="line">            &#39;Accept-Language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;</span><br><span class="line">        &#125;</span><br><span class="line">        response &#x3D; session.get(url, headers&#x3D;headers)</span><br><span class="line">        jsonText &#x3D; json.loads(response.text)</span><br><span class="line">        _signature &#x3D; jsonText[&#39;sign&#39;]</span><br><span class="line">        dytk &#x3D; jsonText[&#39;tk&#39;]</span><br><span class="line">        if water_mark:</span><br><span class="line">            print(&#39;正在爬取有水印视频···&#39;)</span><br><span class="line">        else:</span><br><span class="line">            print(&#39;正在爬取无水印视频···&#39;)</span><br><span class="line">        page &#x3D; 1</span><br><span class="line">        while True:</span><br><span class="line">            time.sleep(2)</span><br><span class="line">            print(&#39;正在爬取第&#39; + str(page) + &#39;页&#39;)</span><br><span class="line">            page +&#x3D; 1</span><br><span class="line">            url &#x3D; &#39;http     s:&#x2F;&#x2F;api.anoyi.com&#x2F;api&#x2F;signature&#x2F;ies&#x2F;&#39; + str(id) + &#39;&#x2F;post?tk&#x3D;&#39; + dytk + &#39;&amp;max_cursor&#x3D;&#39; + str(</span><br><span class="line">                cursor) + &#39;&amp;s&#x3D;&#39; + _signature</span><br><span class="line">            response &#x3D; session.get(url, headers&#x3D;headers)</span><br><span class="line">            try:</span><br><span class="line">                jsonText &#x3D; json.loads(response.text)</span><br><span class="line">            except:</span><br><span class="line">                continue</span><br><span class="line">            cursor &#x3D; jsonText[&#39;max_cursor&#39;]</span><br><span class="line">            hasmore &#x3D; jsonText[&#39;has_more&#39;]</span><br><span class="line">            for item in jsonText[&#39;aweme_list&#39;]:</span><br><span class="line">                title &#x3D; item[&#39;desc&#39;]</span><br><span class="line">                print(&#39;正在爬取视频···&quot;&#39; + title + &#39;&quot;&#39;)</span><br><span class="line">                url &#x3D; item[&#39;video&#39;][&#39;play_addr&#39;][&#39;url_list&#39;][0]  # 有水印</span><br><span class="line">                if water_mark:</span><br><span class="line">                    if os.path.exists(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;water_mark&#x2F;&#39; + title + &#39;.mp4&#39;):</span><br><span class="line">                        print(&#39;视频已存在！！！&#39;)</span><br><span class="line">                        continue</span><br><span class="line">                    url &#x3D; url.replace(&#39;&#x2F;play&#x2F;&#39;, &#39;&#x2F;playwm&#x2F;&#39;)</span><br><span class="line">                    headers &#x3D; &#123;</span><br><span class="line">                        &#39;authority&#39;: &#39;aweme.snssdk.com&#39;,</span><br><span class="line">                        &#39;sec-fetch-dest&#39;: &#39;video&#39;,</span><br><span class="line">                        &#39;user-agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.163 Safari&#x2F;537.36&#39;,</span><br><span class="line">                        &#39;accept&#39;: &#39;*&#x2F;*&#39;,</span><br><span class="line">                        &#39;sec-fetch-site&#39;: &#39;cross-site&#39;,</span><br><span class="line">                        &#39;sec-fetch-mode&#39;: &#39;no-cors&#39;,</span><br><span class="line">                        &#39;accept-language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;,</span><br><span class="line">                        &#39;range&#39;: &#39;bytes&#x3D;0-&#39;</span><br><span class="line">                    &#125;</span><br><span class="line">                    response &#x3D; requests.get(url, headers&#x3D;headers, allow_redirects&#x3D;False)</span><br><span class="line">                    url &#x3D; response.headers[&#39;location&#39;]</span><br><span class="line">                    headers &#x3D; &#123;</span><br><span class="line">                        &#39;Connection&#39;: &#39;keep-alive&#39;,</span><br><span class="line">                        &#39;Cache-Control&#39;: &#39;max-age&#x3D;0&#39;,</span><br><span class="line">                        &#39;Upgrade-Insecure-Requests&#39;: &#39;1&#39;,</span><br><span class="line">                        &#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.163 Safari&#x2F;537.36&#39;,</span><br><span class="line">                        &#39;Accept&#39;: &#39;text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.9&#39;,</span><br><span class="line">                        &#39;Accept-Language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;</span><br><span class="line">                    &#125;</span><br><span class="line">                    response &#x3D; requests.get(url, headers&#x3D;headers)</span><br><span class="line">                    self.__create_path(&#39;data&#39;, name, &#39;water_mark&#39;)</span><br><span class="line">                    file &#x3D; open(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;water_mark&#x2F;&#39; + title + &#39;.mp4&#39;, &#39;wb&#39;)</span><br><span class="line">                    file.write(response.content)</span><br><span class="line">                    file.close()</span><br><span class="line">                else:</span><br><span class="line">                    if os.path.exists(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;no_water_mark&#x2F;&#39; + title + &#39;.mp4&#39;):</span><br><span class="line">                        print(&#39;视频已存在！！！&#39;)</span><br><span class="line">                        continue</span><br><span class="line">                    url &#x3D; &#39;https:&#x2F;&#x2F;api.anoyi.com&#x2F;api&#x2F;video&#x2F;no-watermark?url&#x3D;&#39; + quote(url)</span><br><span class="line">                    headers &#x3D; &#123;</span><br><span class="line">                        &#39;Connection&#39;: &#39;keep-alive&#39;,</span><br><span class="line">                        &#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;80.0.3987.163 Safari&#x2F;537.36&#39;,</span><br><span class="line">                        &#39;Sec-Fetch-Dest&#39;: &#39;empty&#39;,</span><br><span class="line">                        &#39;Accept&#39;: &#39;*&#x2F;*&#39;,</span><br><span class="line">                        &#39;Origin&#39;: &#39;https:&#x2F;&#x2F;anoyi.com&#39;,</span><br><span class="line">                        &#39;Sec-Fetch-Site&#39;: &#39;same-site&#39;,</span><br><span class="line">                        &#39;Sec-Fetch-Mode&#39;: &#39;cors&#39;,</span><br><span class="line">                        &#39;Accept-Language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;,</span><br><span class="line">                        &#39;If-None-Match&#39;: &#39;W&#x2F;&quot;148-8N1CAArBSSC2MpiZuqR7kZ2SBt4&quot;&#39;</span><br><span class="line">                    &#125;</span><br><span class="line">                    rsp &#x3D; requests.get(url, headers&#x3D;headers)</span><br><span class="line">                    headers &#x3D; &#123;</span><br><span class="line">                        &#39;Connection&#39;: &#39;keep-alive&#39;,</span><br><span class="line">                        &#39;Cache-Control&#39;: &#39;max-age&#x3D;0&#39;,</span><br><span class="line">                        &#39;Upgrade-Insecure-Requests&#39;: &#39;1&#39;,</span><br><span class="line">                        &#39;User-Agent&#39;: &#39;Mozilla&#x2F;5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit&#x2F;604.1.38 (KHTML, like Gecko) Version&#x2F;11.0 Mobile&#x2F;15A372 Safari&#x2F;604.1&#39;,</span><br><span class="line">                        &#39;Accept&#39;: &#39;text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.9&#39;,</span><br><span class="line">                        &#39;Accept-Language&#39;: &#39;zh-CN,zh;q&#x3D;0.9&#39;</span><br><span class="line">                    &#125;</span><br><span class="line">                    response &#x3D; requests.get(rsp.text, headers&#x3D;headers)</span><br><span class="line">                    self.__create_path(&#39;data&#39;, name, &#39;no_water_mark&#39;)</span><br><span class="line">                    file &#x3D; open(path + &#39;&#x2F;&#39; + name + &#39;&#x2F;no_water_mark&#x2F;&#39; + title + &#39;.mp4&#39;, &#39;wb&#39;)</span><br><span class="line">                    file.write(response.content)</span><br><span class="line">                    file.close()</span><br><span class="line">            if hasmore &#x3D;&#x3D; False:</span><br><span class="line">                break</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    app &#x3D; DouYinCrawl()</span><br><span class="line">    # 得到个人信息</span><br><span class="line">    # 第一个参数为个人id，第二个参数为存储的位置</span><br><span class="line">    app.get_info(&#39;50548809333&#39;, &#39;data&#39;)</span><br><span class="line">    # 得到个人视频</span><br><span class="line">    # 第一个参数为个人id，第二个参数为存储的位置</span><br><span class="line">    app.get_videos(&#39;50548809333&#39;, &#39;data&#39;, water_mark&#x3D;True)</span><br><span class="line">    app.get_videos(&#39;50548809333&#39;, &#39;data&#39;, water_mark&#x3D;False)</span><br></pre></td></tr></table></figure>
+
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+        <div class="declare">
+          <ul class="post-copyright">
+            <li>
+              <i class="ri-copyright-line"></i>
+              <strong>版权声明： </strong>
+              本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+            </li>
+          </ul>
+        </div>
+        
+    <footer class="article-footer">
+      
+          
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://yoursite.com/2020/04/29/%E6%8A%96%E9%9F%B3/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spider/" rel="tag">spider</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/04/27/jd%E5%95%86%E5%AE%B6%E7%AB%AFjs%E9%80%86%E5%90%91/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">jd商家端js逆向</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        notify: 'false',
+        verify: 'false',
+        avatar: 'monsterid',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        爬虫小菜鸡
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <span>
+  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
+  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+</span>
+        
+      </li>
+      
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+      <div class="float_btns">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+      </div>
+    </main>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="wishing"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="https://github.com/lsq1227" target="_blank" rel="noopener">git主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <script>
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        document.querySelector('.content').classList.remove('on');
+        document.querySelector('.sidebar').classList.remove('on');
+      }
+    </script>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.jpg">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script>
+  try {
+    var typed = new Typed("#subtitle", {
+      strings: ['浅望幸福，不写忧伤，红尘三千，不道惆怅，不问花开几许，只问浅笑安然', '“如约而至”是个多么美好的词，等的辛苦，却从不辜负', '总在不经意的年生，回首彼岸，纵然发现光景绵长'],
+      startDelay: 0,
+      typeSpeed: 200,
+      loop: true,
+      backSpeed: 100,
+      showCursor: false
+    });
+  } catch (err) {
+  }
+
+</script>
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: 'main',
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto'
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css">
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script>
+
+
+
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+
+  
+<script src="/js/clickLove.js"></script>
+
+
+
+    
+  </div>
+</body>
+
+</html>
